@@ -243,7 +243,7 @@ func FromExistingGoFPdf(FpdfInstance *gofpdf.Fpdf, pdfFile, tracerFile string) *
 	return r
 }
 
-func (r *PdfRenderer) ModifyPDF(content []byte) *gofpdf.Fpdf, err {
+func (r *PdfRenderer) ModifyPDF(content []byte) *gofpdf.Fpdf, error {
 	// try to open tracer
 	var f *os.File
 	var err error
