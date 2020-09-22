@@ -243,14 +243,14 @@ func FromExistingGoFPdf(FpdfInstance *gofpdf.Fpdf, pdfFile, tracerFile string) *
 	return r
 }
 
-func (r *PdfRenderer) ModifyPDF(content []byte) *gofpdf.Fpdf, error {
+func (r *PdfRenderer) ModifyPDF(content []byte) (*gofpdf.Fpdf, error) {
 	// try to open tracer
 	var f *os.File
 	var err error
 	if r.tracerFile != "" {
 		f, err = os.Create(r.tracerFile)
 		if err != nil {
-			return nil, fmt.Errorf("os.Create() on tracefile error:%v", err)
+			return nil, err
 		}
 		defer f.Close()
 		r.w = bufio.NewWriter(f)
