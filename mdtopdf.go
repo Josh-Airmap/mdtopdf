@@ -243,14 +243,14 @@ func FromExistingGoFPdf(FpdfInstance *gofpdf.Fpdf, pdfFile, tracerFile string) *
 	return r
 }
 
-func (r *PdfRenderer) ModifyPDF(content []byte) *gofpdf.Fpdf {
+func (r *PdfRenderer) ModifyPDF(content []byte) *gofpdf.Fpdf, err {
 	// try to open tracer
 	var f *os.File
 	var err error
 	if r.tracerFile != "" {
 		f, err = os.Create(r.tracerFile)
 		if err != nil {
-			return fmt.Errorf("os.Create() on tracefile error:%v", err)
+			return nil, fmt.Errorf("os.Create() on tracefile error:%v", err)
 		}
 		defer f.Close()
 		r.w = bufio.NewWriter(f)
@@ -262,7 +262,7 @@ func (r *PdfRenderer) ModifyPDF(content []byte) *gofpdf.Fpdf {
 	
 	content = []byte(s)
 	_ = bf.Run(content, bf.WithRenderer(r))
-	return r.Pdf
+	return r.Pdf, nil
 }
 
 // Process takes the markdown content, parses it to generate the PDF
